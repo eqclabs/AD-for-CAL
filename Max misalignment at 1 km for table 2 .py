@@ -217,7 +217,7 @@ def print_results(out):
             notes = []
             if p["b"] > 0:
                 s = p["eb"] + p["ep"]   # e_b + e_p^U at the optimum
-                qs = s / 2 - 0.25      # q* = (e_b + e_p^U − 1/2) / 2, reason for taking q=0 alaways 
+                qs = s / 2 - 0.25      # q* = (e_b + e_p^U − 1/2) / 2, reason for taking q=0 alaways
                 all_ok &= (s <= 0.5)
                 line += (f"{p['b']:5d} {p['mu']:10.3e} {p['R']:12.2e} "
                          f"{p['eb']:7.4f} {p['ep']:7.4f} {s:10.4f} {qs:+8.4f}")
@@ -249,7 +249,18 @@ def print_table2(out):
             print(f"{km:>6g}km {SKR_min:>8.0e} {Mode_Name[mode]:>13} | "
                   f"{f(d0):>9} {f(d1):>7} {b:>5} {mu:>10}")
 
-
+    
+    # check: without AD the rate drops from ~1e-8 to 0 within one bisection step (0.01 %)
+    print("\nCheck (no AD): rate at delta_max and one bisection step (0.01 %) beyond it")
+    done = set()
+    for (km, SKR_min, mode, ad), d, p in out:
+        if ad or d is None or (km, mode) in done:
+            continue
+        done.add((km, mode))                       # no-AD delta_max is the same for both thresholds
+        d_ph, d_pol = Mode_Map[mode](d + Tol_Misalign)
+        R_next = best_point(km * Db_Per_Km, d_ph, d_pol, 1)["R"]
+        print(f"{Mode_Name[mode]:>13}: R = {p['R']:.2e} at delta = {100 * d:.2f} %, "
+              f"R = {R_next:.2e} at delta = {100 * (d + Tol_Misalign):.2f} %")
 # Main
 
 if __name__ == "__main__":
