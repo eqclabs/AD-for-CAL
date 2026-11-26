@@ -31,7 +31,7 @@ Targets = [(1.0, 1e-15), (1.0, 1e-21)]        # (distance in km, minimum SKR in 
 Modes = ["both", "ph", "pol"]                  # simultaneous, phase only, polarisation only
 Mode_Map = {"both": lambda d: (d, d), "ph": lambda d: (d, 0.0), "pol": lambda d: (0.0, d)}
 Tol_Misalign = 1e-4                            # bisection accuracy in misalignment (0.01 %)
-N_Workers = 4                                  # parallel processes; set to your number of CPU cores
+N_Workers = 4                                  
 
 
 #Equations (identical to the main script)
