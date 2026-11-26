@@ -111,9 +111,9 @@ def rate_k(pxx, eb, ep, b):
     if b == 1:
         pAD, eb2, ep2 = 1.0, eb, ep
     else:
-        pAD = (1 - eb) ** b + eb ** b
-        eb2 = eb ** b / pAD
-        ep2 = ((1 - eb) ** b - (1 - eb - 2 * ep) ** b) / (2 * pAD)
+        pAD = (1 - eb) ** b + eb ** b                 #equation 9
+        eb2 = eb ** b / pAD         #equation 10
+        ep2 = ((1 - eb) ** b - (1 - eb - 2 * ep) ** b) / (2 * pAD)  # ← q = 0  (Eq. (46), first branch)
         ep2 = min(max(ep2, 0.0), 0.5)
     bracket = 1 - fec * h(eb2) - h(ep2)
     return (pxx / b) * pAD * bracket if bracket >= 1e-12 else 0.0
