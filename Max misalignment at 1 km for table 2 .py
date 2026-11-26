@@ -9,7 +9,7 @@ from scipy.special import factorial, comb
 from scipy.optimize import minimize_scalar
 from concurrent.futures import ProcessPoolExecutor
 
-#parameters (same names and values as the main script)
+#parameters 
 pd = 1e-8          # dark-count probability
 fec = 1.16         # error-correction inefficiency
 Ncut = 40          # truncation of cat-state sums
@@ -113,7 +113,7 @@ def rate_k(pxx, eb, ep, b):
     else:
         pAD = (1 - eb) ** b + eb ** b                 #equation 9
         eb2 = eb ** b / pAD         #equation 10
-        ep2 = ((1 - eb) ** b - (1 - eb - 2 * ep) ** b) / (2 * pAD)  # ← q = 0  (Eq. (46), first branch)
+        ep2 = ((1 - eb) ** b - (1 - eb - 2 * ep) ** b) / (2 * pAD)  # ← q = 0  (Eq. (46), first branch, it is used always)
         ep2 = min(max(ep2, 0.0), 0.5)
     bracket = 1 - fec * h(eb2) - h(ep2)
     return (pxx / b) * pAD * bracket if bracket >= 1e-12 else 0.0
@@ -217,7 +217,7 @@ def print_results(out):
             notes = []
             if p["b"] > 0:
                 s = p["eb"] + p["ep"]   # e_b + e_p^U at the optimum
-                qs = s / 2 - 0.25      # q* = (e_b + e_p^U − 1/2) / 2, reason for taking q=0 alaways
+                qs = s / 2 - 0.25      # q* = (e_b + e_p^U − 1/2) / 2, reason for taking q=0 alaways, but here we print it
                 all_ok &= (s <= 0.5)
                 line += (f"{p['b']:5d} {p['mu']:10.3e} {p['R']:12.2e} "
                          f"{p['eb']:7.4f} {p['ep']:7.4f} {s:10.4f} {qs:+8.4f}")
