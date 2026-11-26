@@ -107,7 +107,7 @@ def eZ_upp(mu, pxx, cache):
 
 # Advantage distillation (q = 0)
 def rate_k(pxx, eb, ep, b):
-    ep = min(0.5, ep)
+    ep = min(0.5, ep)  #equation 37
     if b == 1:
         pAD, eb2, ep2 = 1.0, eb, ep
     else:
@@ -216,8 +216,8 @@ def print_results(out):
             line = f"{Mode_Name[mode]:>13} {'yes' if ad else 'no':>4} | {tol:>9} | "
             notes = []
             if p["b"] > 0:
-                s = p["eb"] + p["ep"]
-                qs = s / 2 - 0.25
+                s = p["eb"] + p["ep"]   # e_b + e_p^U at the optimum
+                qs = s / 2 - 0.25      # q* = (e_b + e_p^U − 1/2) / 2, reason for taking q=0 alaways 
                 all_ok &= (s <= 0.5)
                 line += (f"{p['b']:5d} {p['mu']:10.3e} {p['R']:12.2e} "
                          f"{p['eb']:7.4f} {p['ep']:7.4f} {s:10.4f} {qs:+8.4f}")
